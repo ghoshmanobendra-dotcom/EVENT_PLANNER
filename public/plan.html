@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Planner · AI planner for weddings, birthdays and community events</title>
+  <meta name="description" content="Plan a wedding, birthday or community event with AI: a budget that adds up, a dated timeline, a vendor checklist and ideas personalised to you.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#14422d">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <circle cx="16" cy="16" r="15" fill="currentColor" opacity=".12"/>
+      <path d="M16 6c5 4 7 8 7 11a7 7 0 0 1-14 0c0-3 2-7 7-11Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M16 12v13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h1><a class="brand" href="/">Event Planner</a></h1>
+      <p class="tagline">AI planning for weddings, birthdays and community events</p>
+    </div>
+    <nav aria-label="Site" class="header-cta">
+      <a class="button secondary" href="/contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" class="layout">
+    <section class="card form-card" aria-labelledby="form-title">
+      <p class="eyebrow">Plan with AI</p>
+      <h2 id="form-title">Plan your event</h2>
+      <p class="muted">Share a few details and get a budget, timeline, vendor checklist and ideas made for your event.</p>
+
+      <form id="plan-form">
+        <fieldset class="event-types">
+          <legend>Event type</legend>
+          <label class="type-option">
+            <input type="radio" name="eventType" value="wedding" required checked>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>
+            <span>Wedding</span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="eventType" value="birthday">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20h16M5 20v-7h14v7M12 13V9M12 6.5V5M8 13v-1.5M16 13v-1.5"/></svg>
+            <span>Birthday</span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="eventType" value="community">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5M15 14.5c3 0 6 1.3 6 4.5"/></svg>
+            <span>Community</span>
+          </label>
+        </fieldset>
+        <p id="eventType-error" class="field-error"></p>
+
+        <div class="field" id="candidate-field">
+          <label for="candidateName" id="candidateName-label">Couple's names (candidates)</label>
+          <input id="candidateName" name="candidateName" type="text" required minlength="2" maxlength="100" placeholder="e.g. Aarav & Priya" aria-describedby="candidateName-error candidateName-hint">
+          <p id="candidateName-hint" class="field-hint">Enter the candidate names to personalize your plan and invitation card.</p>
+          <p id="candidateName-error" class="field-error"></p>
+        </div>
+
+        <div class="field">
+          <label for="eventDate">Event date</label>
+          <input id="eventDate" name="eventDate" type="date" required aria-describedby="eventDate-error">
+          <p id="eventDate-error" class="field-error"></p>
+        </div>
+
+        <div class="field">
+          <label for="location">City or area</label>
+          <input id="location" name="location" type="text" required minlength="2" maxlength="80" autocomplete="address-level2" placeholder="e.g. Jaipur" aria-describedby="location-error">
+          <p id="location-error" class="field-error"></p>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="guestCount">Guests</label>
+            <input id="guestCount" name="guestCount" type="number" inputmode="numeric" required min="1" max="5000" step="1" placeholder="150" aria-describedby="guestCount-error">
+            <p id="guestCount-error" class="field-error"></p>
+          </div>
+          <div class="field">
+            <label for="budget">Total budget</label>
+            <div class="money">
+              <label class="visually-hidden" for="currency">Currency</label>
+              <select id="currency" name="currency" aria-describedby="currency-error">
+                <option value="INR" selected>INR</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="AED">AED</option>
+              </select>
+              <input id="budget" name="budget" type="number" inputmode="numeric" required min="1" max="1000000000" step="1" placeholder="1500000" aria-describedby="budget-error">
+            </div>
+            <p id="budget-error" class="field-error"></p>
+            <p id="currency-error" class="field-error"></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="vibe">Style or vibe <span class="optional">(optional)</span></label>
+          <input id="vibe" name="vibe" type="text" maxlength="200" placeholder="e.g. pastel garden, retro disco" aria-describedby="vibe-error">
+          <p id="vibe-error" class="field-error"></p>
+        </div>
+
+        <div class="field">
+          <label for="priorities">Priorities and constraints <span class="optional">(optional)</span></label>
+          <textarea id="priorities" name="priorities" rows="3" maxlength="500" placeholder="Dietary needs, traditions, accessibility, eco-friendly…" aria-describedby="priorities-error"></textarea>
+          <p id="priorities-error" class="field-error"></p>
+        </div>
+
+        <div class="field">
+          <label for="language">Plan language</label>
+          <select id="language" name="language" aria-describedby="language-error">
+            <option value="English" selected>English</option>
+            <option value="Hindi" lang="hi">हिन्दी (Hindi)</option>
+            <option value="Tamil" lang="ta">தமிழ் (Tamil)</option>
+            <option value="Bengali" lang="bn">বাংলা (Bengali)</option>
+            <option value="Spanish" lang="es">Español (Spanish)</option>
+            <option value="French" lang="fr">Français (French)</option>
+          </select>
+          <p id="language-error" class="field-error"></p>
+        </div>
+
+        <p id="form-error" class="field-error"></p>
+        <button class="button primary block" type="submit" data-submit>Create my plan</button>
+      </form>
+    </section>
+
+    <div class="plan-column">
+      <section id="empty-state" class="card empty-state" aria-labelledby="empty-title">
+        <h2 id="empty-title">Your plan will appear here</h2>
+        <ul class="feature-list">
+          <li><strong>Invitation card</strong> tailored to candidates with one-click print and sharing</li>
+          <li><strong>Budget</strong> split by category, adding up to exactly what you can spend</li>
+          <li><strong>Timeline</strong> with real dates counted back from your event day</li>
+          <li><strong>Vendor checklist</strong> with what to look for and questions to ask</li>
+          <li><strong>Ideas</strong> personalised to your style, guests and priorities</li>
+        </ul>
+      </section>
+
+      <section id="results" class="results" aria-label="Generated plan" aria-busy="false" hidden>
+        <div id="plan"></div>
+
+        <form id="refine-form" class="card refine no-print">
+          <h3 id="refine-title">Ask Event Planner to adjust this plan</h3>
+          <label for="feedback">What should change?</label>
+          <div class="refine-row">
+            <input id="feedback" name="feedback" type="text" required minlength="3" maxlength="300" placeholder="e.g. Cut catering by 10% and add a mehendi night" aria-describedby="feedback-error">
+            <button class="button primary" type="submit" data-submit>Refine plan</button>
+          </div>
+          <p id="feedback-error" class="field-error"></p>
+          <div class="chips" role="group" aria-label="Suggested changes">
+            <button type="button" class="chip" data-suggestion="Make it cheaper">Make it cheaper</button>
+            <button type="button" class="chip" data-suggestion="Make it more eco-friendly">More eco-friendly</button>
+            <button type="button" class="chip" data-suggestion="Add more traditional rituals">Add traditional rituals</button>
+            <button type="button" class="chip" data-suggestion="Make it more accessible for elderly guests">More accessible</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+
+  <footer class="site-footer">
+    <nav aria-label="Footer">
+      <a href="/">Home</a> ·
+      <a href="/plan" aria-current="page">Plan an event</a> ·
+      <a href="/contact">Contact</a>
+    </nav>
+    <p>Plans are AI-generated suggestions. Always confirm prices, permits and availability with vendors.</p>
+  </footer>
+</body>
+</html>

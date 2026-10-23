@@ -1,0 +1,198 @@
+/* ============================================================
+   Landing page (/) – layout and landing-specific components.
+   Colors, type and shared utilities come from styles.css.
+   ============================================================ */
+
+/* --- Header brand ----------------------------------------- */
+.brand { font: 700 1.55rem/1.2 var(--font-serif); letter-spacing: -0.01em; }
+.header-cta { margin-left: auto; }
+
+/* --- Content bands ---------------------------------------- */
+.band {
+  max-width: 1200px; margin: 0 auto;
+  padding: clamp(3rem, 8vw, 5.5rem) clamp(1rem, 4vw, 3rem);
+}
+.band + .band { border-top: 1px solid var(--border); }
+
+/* --- Hero -------------------------------------------------- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+.hero h1 {
+  margin: 1.25rem 0 1rem;
+  font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--primary);
+}
+
+/* Status pill */
+.pill {
+  display: inline-flex; align-items: center; gap: 0.55rem; margin: 0;
+  padding: 0.32rem 0.9rem; border: 1px solid var(--border); border-radius: 999px;
+  background: var(--surface); color: var(--text-muted); font-size: 0.84rem;
+}
+.pill::before {
+  content: ""; inline-size: 0.42rem; block-size: 0.42rem;
+  border-radius: 50%; background: var(--accent);
+  flex: none;
+}
+
+.lede { max-width: 36rem; font: 1.15rem/1.65 var(--font-serif); color: var(--text-muted); }
+.hero .actions { align-items: center; gap: 1.25rem; margin-top: 1.75rem; }
+
+/* CTA buttons */
+.button.large {
+  padding: 0.9rem 1.75rem;
+  border-radius: 999px;
+  font-size: 1.05rem;
+}
+.arrow {
+  inline-size: 1.1em; block-size: 1.1em;
+  fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.text-link { font-weight: 600; text-underline-offset: 0.28em; }
+
+/* --- Preview card (hero) ----------------------------------- */
+.preview { margin: 0; display: grid; gap: 1.25rem; }
+.preview figcaption {
+  display: grid; gap: 0.2rem;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+}
+.preview-title { font: 600 1.25rem/1.3 var(--font-serif); color: var(--primary); }
+.preview-tasks {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 0.5rem;
+}
+.preview-tasks li {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: 0.72rem 0.95rem; border-radius: var(--radius-sm);
+  background: var(--surface-low); font-size: 0.9rem;
+}
+.preview-tasks time { color: var(--text-muted); font-weight: 600; }
+
+/* --- Budget share bars ------------------------------------ */
+.shares { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; }
+.shares li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; font-size: 0.9rem; }
+.shares .amount { margin-left: auto; }
+.shares .bar    { inline-size: 100%; margin: 0; }
+.shares .total  { padding-top: 0.75rem; border-top: 1px solid var(--border); font-weight: 700; }
+
+/* --- Section headings ------------------------------------- */
+.section-head { max-width: 40rem; margin-bottom: 2.5rem; }
+.section-head.center { margin-inline: auto; text-align: center; }
+.section-head h2 {
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+/* --- Tile grids ------------------------------------------- */
+.grid   { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); }
+.tile   { display: flex; flex-direction: column; }
+.tile h3 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; color: var(--primary); }
+.tile p:last-child { margin-bottom: 0; }
+
+/* Icon badge */
+.icon {
+  display: grid; place-items: center;
+  inline-size: 2.8rem; block-size: 2.8rem; margin-bottom: 1.25rem;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface-low); color: var(--primary);
+}
+.icon svg {
+  inline-size: 1.35rem; block-size: 1.35rem;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Event-type cards */
+.event-card a {
+  margin-top: auto; padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-weight: 600; text-decoration: none;
+}
+.event-card a:hover { text-decoration: underline; }
+
+/* Sample quote */
+.sample {
+  margin-top: auto; padding: 0.8rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-low); font-size: 0.88rem;
+}
+
+/* --- Steps ------------------------------------------------ */
+.steps { counter-reset: step; }
+.steps li { counter-increment: step; }
+.steps li::before {
+  content: "0" counter(step);
+  display: block; margin-bottom: 1rem;
+  font: 400 2rem/1 var(--font-serif); color: var(--primary); opacity: 0.75;
+}
+
+/* --- Example section -------------------------------------- */
+.example { display: grid; gap: 1rem; max-width: 56rem; }
+.example h3 { margin: 1rem 0 0; }
+.example .idea { max-width: 36rem; }
+.example-head .summary { margin: 0; }
+
+/* --- Facts grid ------------------------------------------- */
+.facts li {
+  display: grid; gap: 0.3rem; padding: 1.1rem;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface-low);
+}
+.facts strong { font: 600 1.15rem/1.3 var(--font-serif); color: var(--primary); }
+.facts span   { color: var(--text-muted); font-size: 0.88rem; }
+
+/* --- CTA band --------------------------------------------- */
+.cta {
+  align-items: center; gap: 0.75rem; max-width: 48rem; margin: 0 auto;
+  padding: clamp(2rem, 6vw, 4rem); text-align: center;
+  background: var(--surface-low);
+  border-radius: var(--radius);
+}
+.cta .lede { margin-bottom: 0.75rem; }
+.cta h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; color: var(--primary); }
+
+/* --- Responsive ------------------------------------------- */
+@media (min-width: 760px) {
+  .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 4rem; }
+}
+@media (max-width: 560px) {
+  .header-cta { display: none; }
+}
+
+/* --- Motion (landing-specific hover effects) -------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .event-card a, .text-link {
+    transition: color 0.18s ease;
+  }
+  .icon {
+    transition: background-color 0.18s ease, border-color 0.18s ease;
+  }
+  .tile:hover .icon {
+    background: var(--primary-soft);
+    border-color: var(--primary);
+  }
+}
+
+/* --- Print (landing-specific overrides) ------------------- */
+@media print {
+  .hero .actions,
+  .header-cta,
+  .pill { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .band { padding: 1.5rem 0; }
+}

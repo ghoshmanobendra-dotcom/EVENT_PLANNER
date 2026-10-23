@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Planner · AI planner for weddings, birthdays and community events</title>
+  <meta name="description" content="Plan a wedding, birthday or community event with AI: a budget that adds up, a dated timeline, a vendor checklist and ideas personalised to you. Free, no account.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#14422d">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/landing.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <circle cx="16" cy="16" r="15" fill="currentColor" opacity=".12"/>
+      <path d="M16 6c5 4 7 8 7 11a7 7 0 0 1-14 0c0-3 2-7 7-11Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M16 12v13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <a class="brand" href="/" aria-current="page">Event Planner</a>
+      <p class="tagline">AI planning for weddings, birthdays and community events</p>
+    </div>
+    <nav aria-label="Site" class="header-cta">
+      <a class="button secondary" href="/contact">Contact</a>
+      <a class="button primary" href="/plan">Start planning</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="band hero" aria-labelledby="hero-title">
+      <div>
+        <p class="pill">AI event planner · Powered by Gemini</p>
+        <h1 id="hero-title">Plan the whole event in one conversation</h1>
+        <p class="lede">Tell Event Planner about your wedding, birthday or community event. Get a budget that adds up, a dated timeline, a vendor checklist and ideas made for you, in seconds.</p>
+        <div class="actions">
+          <a class="button primary large" href="/plan">Start planning
+            <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="text-link" href="#example">See an example</a>
+        </div>
+      </div>
+
+      <figure class="card preview">
+        <figcaption>
+          <span class="eyebrow">Example plan</span>
+          <strong class="preview-title">Royal Rajasthani wedding · 300 guests</strong>
+          <span class="muted">Jaipur · ₹2,500,000 budget</span>
+        </figcaption>
+        <ul class="shares">
+          <li><span>Venue</span><span class="amount">30% · ₹750,000</span><meter class="bar" min="0" max="100" value="30" aria-hidden="true"></meter></li>
+          <li><span>Catering</span><span class="amount">25% · ₹625,000</span><meter class="bar" min="0" max="100" value="25" aria-hidden="true"></meter></li>
+          <li><span>Decor &amp; flowers</span><span class="amount">15% · ₹375,000</span><meter class="bar" min="0" max="100" value="15" aria-hidden="true"></meter></li>
+        </ul>
+        <ul class="preview-tasks">
+          <li><span>Book venue</span><span class="badge">Do now</span></li>
+          <li><span>Send invitations</span><time datetime="2026-12-06">Dec 6</time></li>
+        </ul>
+      </figure>
+    </section>
+
+    <section class="band" aria-labelledby="types-title">
+      <div class="section-head center">
+        <p class="eyebrow">Three kinds of event</p>
+        <h2 id="types-title">What are you planning?</h2>
+        <p class="muted">Each plan starts from what that kind of event needs, then adapts to your date, city, guests and budget.</p>
+      </div>
+      <ul class="grid grid-3">
+        <li class="tile event-card">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg></span>
+          <h3>Wedding</h3>
+          <p class="muted">Venue, catering, attire, photography, decor and the traditions you care about.</p>
+          <a href="/plan?type=wedding">Plan a wedding <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="tile event-card">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20h16M5 20v-7h14v7M12 13V9M12 6.5V5M8 13v-1.5M16 13v-1.5"/></svg></span>
+          <h3>Birthday</h3>
+          <p class="muted">Milestone parties, kids' themes and small gatherings, from the cake to the return gifts.</p>
+          <a href="/plan?type=birthday">Plan a birthday <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="tile event-card">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5M15 14.5c3 0 6 1.3 6 4.5"/></svg></span>
+          <h3>Community event</h3>
+          <p class="muted">Festivals, drives and neighbourhood meetups, with permits, safety and volunteers covered.</p>
+          <a href="/plan?type=community">Plan a community event <span aria-hidden="true">→</span></a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="band" aria-labelledby="features-title">
+      <div class="section-head">
+        <p class="eyebrow">One plan, four parts</p>
+        <h2 id="features-title">What you get</h2>
+      </div>
+      <ul class="grid grid-2">
+        <li class="tile">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.5c-.5-1-1.4-1.5-2.5-1.5-1.4 0-2.5.8-2.5 2s1 1.6 2.5 2 2.5.9 2.5 2-1.1 2-2.5 2c-1.1 0-2-.5-2.5-1.5M12 6.5V8M12 16v1.5"/></svg></span>
+          <h3>Budget</h3>
+          <p class="muted">Split by category and adding up to exactly what you can spend, with a contingency reserve and a money-saving tip for every line.</p>
+          <p class="sample"><strong>From a real plan:</strong> “Opt for interactive live chaat and street food counters from local Pune caterers instead of a heavy sit-down buffet.”</p>
+        </li>
+        <li class="tile">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>
+          <h3>Timeline</h3>
+          <p class="muted">Real dates counted back from your event day. Anything already overdue moves to today and is flagged “Do now”.</p>
+          <p class="sample"><strong>From a real plan:</strong> a wedding 17 weeks away moved “Book venue” (normally 44 weeks out) to today.</p>
+        </li>
+        <li class="tile">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 6h10M10 12h10M10 18h10M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5 2.5-2.5M3.5 18l1.5 1.5 2.5-2.5"/></svg></span>
+          <h3>Vendor checklist</h3>
+          <p class="muted">What to look for, questions to ask before booking and a book-by date for each vendor. Tick them off as you go.</p>
+          <p class="sample"><strong>From a real plan:</strong> “Is on-site setup and technical troubleshooting included on the day?”</p>
+        </li>
+        <li class="tile">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3Z"/></svg></span>
+          <h3>Personalised ideas</h3>
+          <p class="muted">Theme, decor, food, activities and guest experience, each explaining why it fits your event.</p>
+          <p class="sample"><strong>From a real plan:</strong> “It strictly honors the vegetarian priority while blending playful arcade nostalgia into the menu.”</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="band" aria-labelledby="how-title">
+      <div class="section-head center">
+        <p class="eyebrow">Three steps</p>
+        <h2 id="how-title">How it works</h2>
+      </div>
+      <ol class="grid grid-3 steps">
+        <li class="tile">
+          <h3>Describe your event</h3>
+          <p class="muted">Date, city, guest count, budget and currency, plus the vibe and anything that matters: dietary needs, traditions, accessibility.</p>
+        </li>
+        <li class="tile">
+          <h3>Gemini drafts your plan</h3>
+          <p class="muted">Gemini chooses the categories, tasks, vendors and ideas. Event Planner then turns them into amounts that add up exactly and real calendar dates.</p>
+        </li>
+        <li class="tile">
+          <h3>Refine in plain words</h3>
+          <p class="muted">Ask for “make it cheaper” or “more eco-friendly” and the plan is revised, not restarted.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="example" class="band" aria-labelledby="example-title">
+      <div class="section-head">
+        <p class="eyebrow">Unedited output</p>
+        <h2 id="example-title">Example output</h2>
+        <p class="muted">Part of a plan Event Planner generated for a retro arcade birthday, shown as it came back.</p>
+      </div>
+      <article class="card example">
+        <header class="example-head">
+          <p class="eyebrow">Birthday · Pune · 40 guests · ₹60,000</p>
+          <p class="summary">Celebrate in retro 8-bit style with a dynamic retro arcade birthday party in Pune designed for 40 guests.</p>
+        </header>
+
+        <h3>Budget</h3>
+        <ul class="shares">
+          <li><span>Food &amp; cake</span><span class="amount">40% · ₹24,000</span><meter class="bar" min="0" max="100" value="40" aria-hidden="true"></meter></li>
+          <li><span>Venue</span><span class="amount">20% · ₹12,000</span><meter class="bar" min="0" max="100" value="20" aria-hidden="true"></meter></li>
+          <li><span>Decorations</span><span class="amount">12% · ₹7,200</span><meter class="bar" min="0" max="100" value="12" aria-hidden="true"></meter></li>
+          <li><span>Entertainment &amp; activities</span><span class="amount">10% · ₹6,000</span><meter class="bar" min="0" max="100" value="10" aria-hidden="true"></meter></li>
+          <li><span>Contingency</span><span class="amount">8% · ₹4,800</span><meter class="bar" min="0" max="100" value="8" aria-hidden="true"></meter></li>
+          <li><span>Return gifts</span><span class="amount">6% · ₹3,600</span><meter class="bar" min="0" max="100" value="6" aria-hidden="true"></meter></li>
+          <li><span>Invitations</span><span class="amount">4% · ₹2,400</span><meter class="bar" min="0" max="100" value="4" aria-hidden="true"></meter></li>
+          <li class="total"><span>Total</span><span class="amount">100% · ₹60,000</span></li>
+        </ul>
+
+        <h3>Timeline</h3>
+        <ol class="timeline">
+          <li><time datetime="2027-01-17">Jan 17</time><div><p class="task">Pick theme and guest list</p><p class="muted">Finalize the retro arcade concept palette, compile the 40-person guest list, and define key expectations.</p></div></li>
+          <li><time datetime="2027-02-07">Feb 7</time><div><p class="task">Arrange entertainment</p><p class="muted">Secure retro console rentals, hook up television screens or projectors, and test multi-player classic games.</p></div></li>
+        </ol>
+
+        <h3>An idea</h3>
+        <div class="idea">
+          <span class="tag">Activities</span>
+          <h4>Retro High-Score Tournament</h4>
+          <p>Host a knockout tournament featuring accessible classics like Pac-Man, Mario Kart, and Street Fighter, tracking leaderboards on a dry-erase retro marquee board with a prize for the champion.</p>
+          <p class="why"><strong>Why it fits you: </strong>It keeps all 40 guests engaged in interactive, cost-effective fun tailored to the arcade theme.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="band" aria-label="Details">
+      <ul class="grid grid-4 facts">
+        <li><strong>6 plan languages</strong><span>English, Hindi, Tamil, Bengali, Spanish, French</span></li>
+        <li><strong>5 currencies</strong><span>INR, USD, EUR, GBP, AED</span></li>
+        <li><strong>Print or save as PDF</strong><span>A clean printout of the whole plan</span></li>
+        <li><strong>Saved in your browser</strong><span>Your plan stays on this device. No account needed.</span></li>
+      </ul>
+    </section>
+
+    <section class="band" aria-labelledby="cta-title">
+      <div class="tile cta">
+        <h2 id="cta-title">Your event, planned in seconds</h2>
+        <p class="lede">No sign-up. Describe your event and get a complete plan you can refine.</p>
+        <a class="button primary large" href="/plan">Start planning</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav aria-label="Footer">
+      <a href="/">Home</a> ·
+      <a href="/plan">Plan an event</a> ·
+      <a href="/contact">Contact</a>
+    </nav>
+    <p>Plans are AI-generated suggestions. Always confirm prices, permits and availability with vendors.</p>
+    <p>Powered by Gemini · Designed with Google Stitch</p>
+  </footer>
+</body>
+</html>

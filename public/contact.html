@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact · Event Planner</title>
+  <meta name="description" content="Get in touch with the Event Planner team. We read every message.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#1a5c38">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/contact.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <circle cx="16" cy="16" r="15" fill="currentColor" opacity=".12"/>
+      <path d="M16 6c5 4 7 8 7 11a7 7 0 0 1-14 0c0-3 2-7 7-11Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M16 12v13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <a class="brand" href="/">Event Planner</a>
+      <p class="tagline">AI planning for weddings, birthdays and community events</p>
+    </div>
+    <nav aria-label="Site" class="header-cta">
+      <a class="button primary" href="/plan">Start planning</a>
+    </nav>
+  </header>
+
+  <main id="main" class="layout contact-layout">
+    <div>
+      <section class="card form-card" aria-labelledby="contact-title">
+        <p class="eyebrow">Get in touch</p>
+        <h1 id="contact-title">Contact us</h1>
+        <p class="muted">Have a question, found a bug, or want to give feedback? We read every message.</p>
+
+        <form id="contact-form" novalidate>
+
+          <div class="field">
+            <label for="name">Your name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              minlength="1"
+              maxlength="100"
+              autocomplete="name"
+              placeholder="e.g. Priya Sharma"
+              aria-describedby="name-error"
+            >
+            <p id="name-error" class="field-error"></p>
+          </div>
+
+          <div class="field">
+            <label for="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              maxlength="254"
+              autocomplete="email"
+              placeholder="you@example.com"
+              aria-describedby="email-error"
+            >
+            <p id="email-error" class="field-error"></p>
+          </div>
+
+          <div class="field">
+            <label for="subject">Subject</label>
+            <input
+              id="subject"
+              name="subject"
+              type="text"
+              required
+              minlength="2"
+              maxlength="150"
+              placeholder="e.g. Question about my plan"
+              aria-describedby="subject-error"
+            >
+            <p id="subject-error" class="field-error"></p>
+          </div>
+
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="6"
+              required
+              minlength="10"
+              maxlength="2000"
+              placeholder="Tell us what's on your mind…"
+              aria-describedby="message-error"
+            ></textarea>
+            <p id="message-error" class="field-error"></p>
+          </div>
+
+          <button class="button primary block" type="submit" data-submit>Send message</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+
+  <footer class="site-footer">
+    <nav aria-label="Footer">
+      <a href="/">Home</a> ·
+      <a href="/plan">Plan an event</a> ·
+      <a href="/contact" aria-current="page">Contact</a>
+    </nav>
+    <p>Plans are AI-generated suggestions. Always confirm prices, permits and availability with vendors.</p>
+    <p>Powered by Gemini · Designed with Google Stitch</p>
+  </footer>
+</body>
+</html>

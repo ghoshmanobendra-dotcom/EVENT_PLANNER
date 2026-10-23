@@ -1,0 +1,821 @@
+/* ============================================================
+   Fonts – self-hosted woff2, CSP 'self' safe
+   ============================================================ */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/fraunces.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/dm-sans.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ============================================================
+   Design tokens – Light theme (default)
+   Palette: Emerald green + warm cream
+   All colour pairs verified ≥ 4.5:1 (text) / 3:1 (UI elements)
+   ============================================================ */
+:root {
+  color-scheme: light dark;
+
+  /* Surfaces */
+  --bg:           #f7f4ee;   /* warm parchment */
+  --surface:      #ffffff;
+  --surface-low:  #f0ece2;   /* warm cream tint */
+  --surface-high: #e6e0d2;
+
+  /* Text  – all on --bg/#fff ≥ 4.5:1 */
+  --text:         #1c1a15;   /* near-black, warm */
+  --text-muted:   #4a4538;   /* 5.8:1 on #fff */
+
+  /* Borders / UI – ≥ 3:1 on surface */
+  --border:         #b5ae9e; /* 3.2:1 on #fff */
+  --control-border: #6b6456; /* 5.1:1 on #fff */
+
+  /* Brand emerald */
+  --primary:        #1a5c38; /* 7.0:1 on #fff */
+  --primary-hover:  #236e44;
+  --on-primary:     #ffffff;
+  --primary-soft:   #c8e8d6; /* decorative surface */
+
+  /* Accent – warm amber */
+  --accent:         #d97706; /* 3.1:1 on #fff (UI only) */
+  --accent-soft:    #fde8b9;
+  --on-accent-soft: #6b3e00; /* 7.5:1 on --accent-soft */
+
+  /* Semantic */
+  --error:       #b91c1c;  /* 5.5:1 on #fff */
+  --focus:       #1a5c38;  /* matches primary – 3px outline ≥ 3:1 */
+
+  /* Toast */
+  --toast-bg:   #2d2b23;
+  --toast-text: #f5f1e8;
+
+  /* Shape */
+  --radius:    12px;
+  --radius-sm: 8px;
+
+  /* Typography */
+  --font-serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* ============================================================
+   Dark theme
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:           #141210;
+    --surface:      #1e1c18;
+    --surface-low:  #272420;
+    --surface-high: #312e28;
+
+    --text:         #f0ece2;   /* ≥ 14:1 on --bg */
+    --text-muted:   #c4bfb2;   /* 6.0:1 on --bg */
+
+    --border:         #4a4538; /* 3.1:1 on --surface */
+    --control-border: #8c8578; /* 4.6:1 on --surface */
+
+    --primary:        #6ecf98;  /* 5.2:1 on --bg */
+    --primary-hover:  #92ddb0;
+    --on-primary:     #082416;
+    --primary-soft:   #1d3d2c;
+
+    --accent-soft:    #3d2800;
+    --on-accent-soft: #fde8b9;  /* 9:1 on --accent-soft */
+
+    --error:       #fca5a5;    /* 5.8:1 on --bg */
+    --focus:       #6ecf98;
+
+    --toast-bg:   #ece8de;
+    --toast-text: #1c1a15;
+  }
+}
+
+/* ============================================================
+   Reset / base
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 1rem/1.6 var(--font-sans);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+}
+p   { margin: 0 0 0.75rem; }
+a   { color: var(--primary); }
+
+/* Focus ring – 3px outline ≥ 3:1 contrast */
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+/* ============================================================
+   Accessibility utilities
+   ============================================================ */
+.skip-link {
+  position: absolute; left: 1rem; top: -5rem; z-index: 10;
+  padding: 0.6rem 1.1rem; border-radius: var(--radius-sm);
+  background: var(--primary); color: var(--on-primary);
+  font-weight: 600; text-decoration: none;
+}
+.skip-link:focus { top: 1rem; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ============================================================
+   Site header
+   ============================================================ */
+.site-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 1.1rem clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--border);
+  color: var(--primary);
+  background: var(--surface);
+}
+.site-header h1 { font-size: 1.5rem; margin: 0; }
+.brand  { color: inherit; text-decoration: none; font-family: var(--font-serif); font-weight: 700; }
+.logo   { width: 2.4rem; height: 2.4rem; flex: none; color: var(--primary); }
+.tagline { margin: 0; color: var(--text-muted); font-size: 0.82rem; }
+
+/* ============================================================
+   Planner layout
+   ============================================================ */
+.layout {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem;
+  align-items: start; max-width: 1260px; margin: 0 auto;
+  padding: 1.75rem clamp(1rem, 4vw, 3rem) 3.5rem;
+}
+@media (min-width: 960px) {
+  .layout { grid-template-columns: minmax(320px, 400px) minmax(0, 1fr); gap: 2rem; }
+}
+/* Contact page is always single-column */
+.contact-layout { grid-template-columns: minmax(0, 1fr) !important; max-width: 640px; }
+@media (min-width: 960px) and (min-height: 960px) {
+  .form-card { position: sticky; top: 1.75rem; }
+}
+
+/* ============================================================
+   Cards / tiles
+   ============================================================ */
+.card, .tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(1.1rem, 3vw, 1.75rem);
+}
+.plan-column, #plan { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+
+.eyebrow {
+  margin: 0 0 0.35rem; color: var(--primary);
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.muted    { color: var(--text-muted); }
+.optional { color: var(--text-muted); font-weight: 400; }
+
+/* ============================================================
+   Form
+   ============================================================ */
+form        { display: grid; gap: 1rem; margin-top: 1.25rem; }
+fieldset    { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend, label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem; }
+
+.event-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+.event-types legend { grid-column: 1 / -1; }
+.type-option {
+  position: relative; display: grid; justify-items: center; gap: 0.35rem;
+  margin: 0; padding: 0.9rem 0.4rem; text-align: center; cursor: pointer;
+  border: 1px solid var(--control-border); border-radius: var(--radius);
+  font-size: 0.88rem;
+}
+.type-option input { position: absolute; opacity: 0; pointer-events: none; }
+.type-option svg   { width: 1.5rem; height: 1.5rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.type-option:has(input:checked) { border: 2px solid var(--primary); background: var(--primary-soft); color: var(--primary); }
+.type-option:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  width: 100%; padding: 0.7rem 0.85rem;
+  font: inherit; color: var(--text); background: var(--surface);
+  border: 1px solid var(--control-border); border-radius: var(--radius-sm);
+}
+textarea  { resize: vertical; }
+[aria-invalid="true"] { border-color: var(--error); border-width: 2px; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 0.75rem; }
+.money     { display: flex; }
+.money select { width: auto; border-radius: var(--radius-sm) 0 0 var(--radius-sm); background: var(--surface-low); }
+.money input  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; border-left: 0; min-width: 0; }
+
+.field-error { color: var(--error); font-size: 0.84rem; margin: 0.3rem 0 0; }
+.field-error:empty { display: none; }
+.field-hint { color: var(--text-muted); font-size: 0.8rem; margin: 0.25rem 0 0; }
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+  padding: 0.72rem 1.2rem; border-radius: var(--radius-sm);
+  font: 600 0.94rem var(--font-sans); cursor: pointer; text-decoration: none;
+  border: 1px solid transparent; letter-spacing: 0.01em;
+}
+.button.primary   { background: var(--primary); color: var(--on-primary); }
+.button.primary:hover { background: var(--primary-hover); }
+.button.secondary { background: var(--surface); color: var(--text); border-color: var(--control-border); }
+.button.ghost     { background: transparent; color: var(--text); }
+.button.block     { width: 100%; padding-block: 0.95rem; font-size: 1.05rem; }
+.button:disabled  { opacity: 0.6; cursor: progress; }
+
+/* ============================================================
+   Plan output
+   ============================================================ */
+.empty-state h2 { font-size: 1.5rem; }
+.feature-list   { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.5rem; color: var(--text-muted); }
+.feature-list strong { color: var(--text); }
+.results[aria-busy="true"] #plan { opacity: 0.55; }
+
+.plan-header {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: clamp(1.1rem, 3vw, 2rem);
+}
+.plan-header h2 { font-size: 0.88rem; font-family: var(--font-sans); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.summary { font-family: var(--font-serif); font-size: clamp(1.15rem, 2vw, 1.4rem); line-height: 1.45; color: var(--primary); }
+
+.stats {
+  list-style: none; margin: 1.25rem 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem;
+}
+.stats li { padding: 0.85rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-low); font-weight: 600; }
+
+.actions      { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.section-nav  { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.section-nav a {
+  padding: 0.4rem 0.9rem; border-radius: 999px; text-decoration: none;
+  border: 1px solid var(--control-border); color: var(--text); font-size: 0.88rem;
+}
+.section-nav a:hover { background: var(--primary-soft); }
+
+.card h3 {
+  font-size: 1.4rem; color: var(--primary);
+  padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem;
+}
+.card[id] { scroll-margin-top: 1rem; }
+
+/* ============================================================
+   Tables
+   ============================================================ */
+.table-scroll { overflow-x: auto; }
+table  { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
+th, td { padding: 0.75rem 0.65rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+thead th { font: 600 0.72rem var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+tbody th { font-weight: 600; }
+.share { min-width: 9rem; white-space: nowrap; }
+.bar   { appearance: none; display: inline-block; inline-size: 5rem; block-size: 0.4rem; margin-right: 0.5rem; vertical-align: middle; border: 0; border-radius: 999px; background: var(--surface-high); }
+.bar::-webkit-meter-bar         { block-size: 0.4rem; border: 0; border-radius: 999px; background: var(--surface-high); }
+.bar::-webkit-meter-optimum-value { border-radius: 999px; background: var(--primary); }
+.bar::-moz-meter-bar            { border-radius: 999px; background: var(--primary); }
+.amount { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tip    { color: var(--text-muted); min-width: 14rem; }
+tfoot th, tfoot td { font-weight: 700; background: var(--surface-low); border-bottom: 0; }
+
+/* ============================================================
+   Timeline
+   ============================================================ */
+.month h4 {
+  font: 600 0.78rem var(--font-sans); letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--primary); margin: 1rem 0 0.6rem;
+}
+.timeline {
+  list-style: none; margin: 0;
+  padding: 0 0 0 1rem; border-left: 2px solid var(--border);
+  display: grid; gap: 0.6rem;
+}
+.timeline li { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0.75rem; padding: 0.85rem 1rem; border-radius: var(--radius-sm); background: var(--surface-low); }
+.timeline time { font-weight: 600; color: var(--text-muted); font-size: 0.88rem; }
+.task { font-weight: 600; margin: 0 0 0.2rem; }
+.timeline .muted { margin: 0; font-size: 0.9rem; }
+
+.badge {
+  display: inline-block; padding: 0.1rem 0.55rem; border-radius: 999px;
+  background: var(--accent-soft); color: var(--on-accent-soft);
+  font: 600 0.74rem var(--font-sans); vertical-align: middle;
+}
+
+/* ============================================================
+   Vendors & ideas
+   ============================================================ */
+.vendors, .ideas { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; }
+.vendors > li { padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-low); }
+.vendor-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+.vendor-head input { width: 1.25rem; height: 1.25rem; accent-color: var(--primary); }
+.vendor-head label { margin: 0; font-size: 1.02rem; }
+.vendor-head:has(input:checked) label { text-decoration: line-through; color: var(--text-muted); }
+.book-by   { margin-left: auto; font-size: 0.84rem; color: var(--text-muted); }
+.ask       { margin: 0; font-weight: 600; font-size: 0.88rem; }
+.questions { margin: 0.25rem 0 0; padding-left: 1.2rem; color: var(--text-muted); }
+
+.ideas { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.idea  { padding: 1.1rem; border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; }
+.idea h4 { font-size: 1.2rem; margin-top: 0.6rem; }
+.tag { align-self: start; padding: 0.15rem 0.65rem; border-radius: 999px; background: var(--surface-high); font-size: 0.76rem; font-weight: 600; }
+.why { margin: auto 0 0; padding: 0.7rem 0.9rem; border-left: 3px solid var(--primary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--surface-low); font-size: 0.9rem; }
+
+/* ============================================================
+   Refine / chips
+   ============================================================ */
+.refine { background: var(--surface-low); }
+.refine h3 { border: 0; padding: 0; margin: 0; }
+.refine-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.refine-row input { flex: 1 1 16rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip  {
+  padding: 0.35rem 0.9rem; border-radius: 999px;
+  border: 1px solid var(--control-border); background: var(--surface);
+  color: var(--text); font: 0.84rem var(--font-sans); cursor: pointer;
+}
+.chip:hover { background: var(--primary-soft); }
+.chip.active {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+/* ============================================================
+   Status toast
+   ============================================================ */
+.status {
+  position: fixed; left: 50%; bottom: 1.5rem; z-index: 5; transform: translateX(-50%);
+  max-width: min(32rem, calc(100% - 2rem)); margin: 0; padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm); background: var(--toast-bg); color: var(--toast-text);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.22);
+}
+.status:empty { display: none; }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.site-footer {
+  padding: 1.5rem clamp(1rem, 4vw, 3rem);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted); font-size: 0.84rem; text-align: center;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 420px) {
+  .field-row { grid-template-columns: 1fr; }
+  .timeline li { grid-template-columns: 1fr; gap: 0.25rem; }
+}
+
+/* ============================================================
+   Motion – transitions only when the user has no preference
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .button, .chip, .section-nav a, .type-option {
+    transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+}
+
+/* ============================================================
+   Invitation Card Component & Themes
+   ============================================================ */
+.card-description {
+  margin-top: -0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.invitation-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.invitation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.invitation-theme-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.invitation-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+/* Card base */
+.invitation-card {
+  width: 100%;
+  max-width: 540px;
+  border-radius: var(--radius);
+  padding: clamp(1.25rem, 3.5vw, 2.25rem);
+  box-shadow: 0 16px 40px -12px rgb(0 0 0 / 0.18), 0 2px 8px rgb(0 0 0 / 0.08);
+  position: relative;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.invitation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 48px -12px rgb(0 0 0 / 0.22), 0 4px 12px rgb(0 0 0 / 0.1);
+}
+
+.invitation-card-border {
+  border: 2px solid currentColor;
+  border-radius: calc(var(--radius) - 4px);
+  padding: 5px;
+  position: relative;
+}
+
+.invitation-card-inner {
+  border: 1px solid currentColor;
+  border-radius: calc(var(--radius) - 8px);
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1rem, 2.5vw, 1.6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Typography on Card */
+.invitation-ornament-top,
+.invitation-ornament-bottom {
+  font-size: 1.25rem;
+  letter-spacing: 0.4em;
+  opacity: 0.9;
+}
+
+.invitation-eyebrow {
+  font-family: var(--font-sans);
+  font-size: clamp(0.72rem, 1.5vw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin: 0.25rem 0 0;
+  opacity: 0.88;
+}
+
+.invitation-candidate-name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.85rem, 4vw, 2.5rem);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.2;
+  margin: 0.35rem 0;
+  letter-spacing: 0.01em;
+}
+
+.invitation-divider {
+  width: 90px;
+  height: 2px;
+  background: currentColor;
+  position: relative;
+  margin: 0.25rem 0 0.5rem;
+  opacity: 0.65;
+}
+
+.invitation-divider::after {
+  content: "♦";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: inherit;
+  padding: 0 0.4rem;
+  font-size: 0.75rem;
+}
+
+.invitation-subtitle {
+  font-family: var(--font-serif);
+  font-size: clamp(0.92rem, 1.8vw, 1.05rem);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 440px;
+  opacity: 0.92;
+}
+
+.invitation-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0.75rem 0;
+  width: 100%;
+  max-width: 420px;
+  padding: 0.9rem 1.2rem;
+  background: rgb(255 255 255 / 0.12);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgb(255 255 255 / 0.2);
+}
+
+.invitation-detail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.invitation-detail-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  opacity: 0.8;
+}
+
+.invitation-detail-value {
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.invitation-message {
+  font-size: 0.92rem;
+  font-style: italic;
+  margin: 0;
+  opacity: 0.88;
+}
+
+.invitation-footer {
+  margin-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.invitation-rsvp {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ------------------------------------------------------------
+   Themes for Invitation Card
+   ------------------------------------------------------------ */
+/* 1. Emerald Royale (Default) */
+.invitation-card.theme-emerald {
+  background: linear-gradient(135deg, #103622 0%, #1a5c38 60%, #0d2f1d 100%);
+  color: #f7eed8;
+  border: 1px solid #c9a84e;
+}
+.invitation-card.theme-emerald .invitation-card-border,
+.invitation-card.theme-emerald .invitation-card-inner,
+.invitation-card.theme-emerald .invitation-divider {
+  color: #dfc168;
+}
+.invitation-card.theme-emerald .invitation-candidate-name {
+  color: #fff6e0;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+}
+.invitation-card.theme-emerald .invitation-details {
+  background: rgb(0 0 0 / 0.2);
+  border-color: rgb(223 193 104 / 0.35);
+}
+
+/* 2. Golden Sunset */
+.invitation-card.theme-gold {
+  background: linear-gradient(135deg, #5c3e0e 0%, #8c631a 50%, #633f0a 100%);
+  color: #fff9ed;
+  border: 1px solid #ffd875;
+}
+.invitation-card.theme-gold .invitation-card-border,
+.invitation-card.theme-gold .invitation-card-inner,
+.invitation-card.theme-gold .invitation-divider {
+  color: #ffe394;
+}
+.invitation-card.theme-gold .invitation-candidate-name {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
+}
+.invitation-card.theme-gold .invitation-details {
+  background: rgb(0 0 0 / 0.25);
+  border-color: rgb(255 227 148 / 0.35);
+}
+
+/* 3. Rose Romance */
+.invitation-card.theme-rose {
+  background: linear-gradient(135deg, #4d1523 0%, #752238 50%, #3d0f1b 100%);
+  color: #fcecef;
+  border: 1px solid #f2b8c6;
+}
+.invitation-card.theme-rose .invitation-card-border,
+.invitation-card.theme-rose .invitation-card-inner,
+.invitation-card.theme-rose .invitation-divider {
+  color: #f2b8c6;
+}
+.invitation-card.theme-rose .invitation-candidate-name {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+}
+.invitation-card.theme-rose .invitation-details {
+  background: rgb(0 0 0 / 0.2);
+  border-color: rgb(242 184 198 / 0.35);
+}
+
+/* 4. Midnight Star */
+.invitation-card.theme-midnight {
+  background: linear-gradient(135deg, #0d1a33 0%, #172d54 50%, #091224 100%);
+  color: #edf2fc;
+  border: 1px solid #a4bde8;
+}
+.invitation-card.theme-midnight .invitation-card-border,
+.invitation-card.theme-midnight .invitation-card-inner,
+.invitation-card.theme-midnight .invitation-divider {
+  color: #bcd1f5;
+}
+.invitation-card.theme-midnight .invitation-candidate-name {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+}
+.invitation-card.theme-midnight .invitation-details {
+  background: rgb(0 0 0 / 0.25);
+  border-color: rgb(188 209 245 / 0.35);
+}
+
+/* Standalone Invitation Page Layout */
+.invitation-standalone-layout {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1rem, 3vw, 2rem) 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.invitation-page-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.invitation-page-toolbar .toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.invitation-standalone-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+/* ============================================================
+   Print
+   ============================================================ */
+@media print {
+  :root {
+    --bg: #fff; --surface: #fff; --surface-low: #fff;
+    --text: #000; --text-muted: #333; --primary: #1a5c38;
+    --border: #ccc;
+  }
+  .site-header, .form-card, .no-print, .status, .empty-state, .invitation-toolbar { display: none !important; }
+  .layout   { display: block; padding: 0; }
+  .card, .plan-header { border: 0; padding: 0 0 1rem; break-inside: avoid-page; }
+  .vendors > li, .idea, .timeline li { break-inside: avoid; }
+
+  /* Full plan print: card prints cleanly */
+  .invitation-card {
+    box-shadow: none !important;
+    break-inside: avoid-page;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Specific: PRINTING INVITATION ONLY from Plan Page */
+  body.printing-invitation {
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.printing-invitation * {
+    visibility: hidden !important;
+  }
+
+  body.printing-invitation #section-invitation,
+  body.printing-invitation #section-invitation * {
+    visibility: visible !important;
+  }
+
+  body.printing-invitation #section-invitation {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 15mm 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  body.printing-invitation #section-invitation > h3,
+  body.printing-invitation #section-invitation > .card-description,
+  body.printing-invitation .invitation-toolbar,
+  body.printing-invitation .no-print {
+    display: none !important;
+  }
+
+  body.printing-invitation .invitation-card-container {
+    width: 100% !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  body.printing-invitation .invitation-card {
+    max-width: 520px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    break-inside: avoid-page !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Standalone invitation page print */
+  body.invitation-page .site-header,
+  body.invitation-page .site-footer,
+  body.invitation-page .invitation-page-toolbar {
+    display: none !important;
+  }
+
+  body.invitation-page .invitation-standalone-layout {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  body.invitation-page .invitation-card {
+    max-width: 520px !important;
+    margin: 10mm auto !important;
+    break-inside: avoid-page !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
