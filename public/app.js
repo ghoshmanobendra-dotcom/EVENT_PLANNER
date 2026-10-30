@@ -5,12 +5,12 @@ const STORAGE_KEY = 'event-planner:plan';
 const NUMBER_FIELDS = ['guestCount', 'budget'];
 const STATUS_CLEAR_MS = 6000;
 
-const form = document.getElementById('plan-form');
-const status = document.getElementById('status');
-const emptyState = document.getElementById('empty-state');
-const results = document.getElementById('results');
-const planView = document.getElementById('plan');
-const refineForm = document.getElementById('refine-form');
+const form = /** @type {HTMLFormElement} */ (document.getElementById('plan-form'));
+const status = /** @type {HTMLElement} */ (document.getElementById('status'));
+const emptyState = /** @type {HTMLElement} */ (document.getElementById('empty-state'));
+const results = /** @type {HTMLElement} */ (document.getElementById('results'));
+const planView = /** @type {HTMLElement} */ (document.getElementById('plan'));
+const refineForm = /** @type {HTMLFormElement} */ (document.getElementById('refine-form'));
 
 /** @type {{ input: object, plan: object, checked: number[] } | null} */
 let state = null;
@@ -19,11 +19,13 @@ let state = null;
 const storage = {
   load() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY));
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw !== null ? JSON.parse(raw) : null;
     } catch {
       return null;
     }
   },
+  /** @param {any} value */
   save(value) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
@@ -41,9 +43,10 @@ const storage = {
 };
 
 const candidateLabel = document.getElementById('candidateName-label');
-const candidateInput = document.getElementById('candidateName');
+const candidateInput = /** @type {HTMLInputElement | null} */ (document.getElementById('candidateName'));
 const candidateHint = document.getElementById('candidateName-hint');
 
+/** @type {Record<string, {label: string, placeholder: string, hint: string, required: boolean}>} */
 const CANDIDATE_CONFIGS = {
   wedding: {
     label: "Couple's names (candidates)",
@@ -65,6 +68,10 @@ const CANDIDATE_CONFIGS = {
   },
 };
 
+/**
+ * Updates the candidate field UI based on the selected event type.
+ * @param {string} eventType - The type of event (e.g. 'wedding', 'birthday', 'corporate').
+ */
 function updateCandidateField(eventType) {
   const config = CANDIDATE_CONFIGS[eventType] || CANDIDATE_CONFIGS.wedding;
   if (candidateLabel) {
@@ -81,59 +88,94 @@ function updateCandidateField(eventType) {
   }
 }
 
+/**
+ * @returns {Record<string, any>}
+ */
 function readForm() {
+  if (!form) return {};
+  /** @type {Record<string, any>} */
   const input = Object.fromEntries(new FormData(form));
   for (const field of NUMBER_FIELDS) input[field] = Number(input[field]);
   return input;
 }
 
+/**
+ * @param {Record<string, any>} input
+ */
 function fillForm(input) {
   for (const [name, value] of Object.entries(input)) {
     const field = form.elements.namedItem(name);
     if (field instanceof RadioNodeList) field.value = value;
-    else if (field) field.value = String(value);
+    else if (field && 'value' in field) field.value = String(value);
   }
   if (input.eventType) updateCandidateField(input.eventType);
 }
 
+/** Clear all inline field validation messages and aria-invalid attributes. */
 function clearFieldErrors() {
   for (const node of document.querySelectorAll('.field-error')) node.textContent = '';
   for (const field of document.querySelectorAll('[aria-invalid]')) field.removeAttribute('aria-invalid');
 }
 
-/** Error slots are named `<field>-error`; `form` covers errors that belong to no single field. */
+/**
+ * Error slots are named `<field>-error`; `form` covers errors that belong to no single field.
+ * @param {Record<string, string>} fieldErrors
+ */
 function showFieldErrors(fieldErrors) {
   for (const [name, message] of Object.entries(fieldErrors)) {
     const slot = document.getElementById(`${name}-error`) ?? document.getElementById('form-error');
-    slot.textContent = message;
+    if (slot) slot.textContent = message;
     document.querySelector(`[name="${CSS.escape(name)}"]`)?.setAttribute('aria-invalid', 'true');
   }
-  document.querySelector('[aria-invalid="true"]')?.focus();
+  const firstInvalid = document.querySelector('[aria-invalid="true"]');
+  if (firstInvalid instanceof HTMLElement) firstInvalid.focus();
 }
 
+/** @type {ReturnType<typeof setTimeout> | undefined} Timer used to auto-clear the status message. */
 let statusTimer;
+
+/**
+ * Sets the busy/idle state of the submit buttons and status message.
+ * @param {boolean} busy
+ * @param {string} [message]
+ * @param {{ autoClear?: boolean }} [options]
+ */
 function setBusy(busy, message = '', { autoClear = false } = {}) {
-  for (const button of document.querySelectorAll('[data-submit]')) button.disabled = busy;
-  results.setAttribute('aria-busy', String(busy));
+  for (const button of document.querySelectorAll('[data-submit]')) {
+    if (button instanceof HTMLButtonElement || button instanceof HTMLInputElement) button.disabled = busy;
+  }
+  results?.setAttribute('aria-busy', String(busy));
   clearTimeout(statusTimer);
-  status.textContent = message;
-  if (autoClear) statusTimer = setTimeout(() => (status.textContent = ''), STATUS_CLEAR_MS);
+  if (status) status.textContent = message;
+  if (autoClear) statusTimer = setTimeout(() => { if (status) status.textContent = ''; }, STATUS_CLEAR_MS);
 }
 
+/**
+ * @param {{ input: object, plan: object, checked: number[] }} nextState
+ * @param {{ focus?: boolean }} [options]
+ */
 function show(nextState, { focus = false } = {}) {
   state = nextState;
   storage.save(state);
   renderPlan(planView, state, { onToggleVendor: toggleVendor, onStartOver: startOver });
   results.hidden = false;
   emptyState.hidden = true;
-  if (focus) planView.querySelector('h2')?.focus();
+  if (focus) {
+    const heading = planView.querySelector('h2');
+    if (heading instanceof HTMLElement) heading.focus();
+  }
 }
 
+/**
+ * @param {number} index
+ * @param {boolean} checked
+ */
 function toggleVendor(index, checked) {
+  if (!state) return;
   const done = new Set(state.checked);
   if (checked) done.add(index);
   else done.delete(index);
-  state = { ...state, checked: [...done] };
+  state = { input: state.input, plan: state.plan, checked: [...done] };
   storage.save(state);
 }
 
@@ -145,9 +187,13 @@ function startOver() {
   results.hidden = true;
   emptyState.hidden = false;
   planView.replaceChildren();
-  form.querySelector('input')?.focus();
+  const firstInput = form.querySelector('input');
+  if (firstInput instanceof HTMLElement) firstInput.focus();
 }
 
+/**
+ * @param {object} body
+ */
 async function requestPlan(body) {
   const response = await fetch('/api/plan', {
     method: 'POST',
@@ -172,8 +218,9 @@ async function generate(input, busyMessage, refinement = {}) {
     setBusy(false, 'Your plan is ready.', { autoClear: true });
     show({ input, plan, checked: [] }, { focus: true });
     return true;
-  } catch (error) {
-    setBusy(false, error.message);
+  } catch (err) {
+    const error = /** @type {{ message?: string, fieldErrors?: Record<string, string> }} */ (err ?? {});
+    setBusy(false, error.message || 'Something went wrong. Please try again.');
     if (error.fieldErrors) showFieldErrors(error.fieldErrors);
     return false;
   }
@@ -192,34 +239,46 @@ form.addEventListener('submit', (event) => {
 refineForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   const feedback = new FormData(refineForm).get('feedback');
-  if (!state || !feedback) return;
+  if (!state || typeof feedback !== 'string' || !feedback.trim()) return;
   const refined = await generate(state.input, 'Updating your plan…', { feedback, previousPlan: state.plan });
   if (refined) refineForm.reset();
 });
 
 for (const chip of document.querySelectorAll('[data-suggestion]')) {
+  if (!(chip instanceof HTMLElement)) continue;
   chip.addEventListener('click', () => {
-    refineForm.elements.namedItem('feedback').value = chip.dataset.suggestion;
-    refineForm.elements.namedItem('feedback').focus();
+    const feedbackField = refineForm.elements.namedItem('feedback');
+    if (feedbackField instanceof HTMLTextAreaElement || feedbackField instanceof HTMLInputElement) {
+      feedbackField.value = chip.dataset.suggestion ?? '';
+      feedbackField.focus();
+    }
   });
 }
 
-document.getElementById('eventDate').min = localIsoDate();
+const eventDateInput = document.getElementById('eventDate');
+if (eventDateInput instanceof HTMLInputElement) {
+  eventDateInput.min = localIsoDate();
+}
 
 const eventTypeRadios = form.elements.namedItem('eventType');
 if (eventTypeRadios instanceof RadioNodeList) {
   for (const radio of eventTypeRadios) {
-    radio.addEventListener('change', () => updateCandidateField(radio.value));
+    radio.addEventListener('change', () => {
+      if (radio instanceof HTMLInputElement) updateCandidateField(radio.value);
+    });
   }
 }
 
 // Landing-page cards link here with ?type=; an unknown value matches no radio and changes nothing.
 const requestedType = new URLSearchParams(location.search).get('type');
 if (requestedType) {
-  form.elements.namedItem('eventType').value = requestedType;
+  const eventTypeField = form.elements.namedItem('eventType');
+  if (eventTypeField instanceof RadioNodeList) eventTypeField.value = requestedType;
   updateCandidateField(requestedType);
 } else {
-  updateCandidateField(form.elements.namedItem('eventType')?.value || 'wedding');
+  const eventTypeField = form.elements.namedItem('eventType');
+  const currentType = eventTypeField instanceof RadioNodeList ? eventTypeField.value : 'wedding';
+  updateCandidateField(currentType || 'wedding');
 }
 
 const saved = storage.load();

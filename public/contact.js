@@ -59,7 +59,7 @@ form.addEventListener('submit', async (event) => {
 
     if (response.ok) {
       form.reset();
-      statusEl.textContent = 'Message sent! We’ll be in touch soon.';
+      statusEl.textContent = "Message sent! We'll be in touch soon.";
       return;
     }
 

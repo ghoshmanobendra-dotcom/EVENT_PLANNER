@@ -8,6 +8,9 @@ const IDEA_LABELS = {
   'guest-experience': 'Guest experience',
 };
 
+/** Milliseconds to wait for afterprint before forcibly removing the invitation-only class. */
+const PRINT_CLEANUP_TIMEOUT_MS = 2500;
+
 /**
  * Minimal element builder. Text is always assigned through text nodes, so
  * model output can never be interpreted as HTML.
@@ -50,7 +53,7 @@ function overview({ input, plan }, { onStartOver }) {
     el('p', { class: 'summary', text: plan.summary }),
     el('ul', { class: 'stats', 'aria-label': 'Key numbers' }, stats.map((text) => el('li', { text }))),
     el('div', { class: 'actions no-print' }, [
-      el('button', { type: 'button', class: 'button primary', text: '✉️ Print invitation card', onClick: printInvitationOnly }),
+      el('button', { type: 'button', class: 'button primary', text: '🖨️ Print invitation card', onClick: printInvitationOnly }),
       el('button', { type: 'button', class: 'button secondary', text: 'Print full plan (PDF)', onClick: () => window.print() }),
       el('button', { type: 'button', class: 'button ghost', text: 'Start over', onClick: onStartOver }),
     ]),
@@ -147,7 +150,7 @@ export function printInvitationOnly() {
     window.removeEventListener('afterprint', cleanup);
   };
   window.addEventListener('afterprint', cleanup);
-  setTimeout(cleanup, 2500);
+  setTimeout(cleanup, PRINT_CLEANUP_TIMEOUT_MS);
   window.print();
 }
 
@@ -244,28 +247,35 @@ export function buildInvitationMarkup({ input }) {
   ]);
 }
 
+/** Shared theme options used by both the inline plan view and the standalone invitation page. */
+export const INVITATION_THEMES = [
+  { id: 'theme-emerald', label: '🌿 Emerald Royale' },
+  { id: 'theme-gold', label: '✨ Golden Sunset' },
+  { id: 'theme-rose', label: '🌸 Rose Romance' },
+  { id: 'theme-midnight', label: '🌌 Midnight Star' },
+];
+
 function invitationCard({ input, plan }) {
   const cardElement = buildInvitationMarkup({ input, plan });
 
-  const themes = [
-    { id: 'theme-emerald', label: '🌿 Emerald Royale' },
-    { id: 'theme-gold', label: '✨ Golden Sunset' },
-    { id: 'theme-rose', label: '🌸 Rose Romance' },
-    { id: 'theme-midnight', label: '🌌 Midnight Star' },
-  ];
+  const themes = INVITATION_THEMES;
 
   const themeSelector = el('div', { class: 'invitation-theme-picker no-print', role: 'group', 'aria-label': 'Card theme' },
     themes.map(({ id, label }, index) =>
       el('button', {
         type: 'button',
         class: `chip ${index === 0 ? 'active' : ''}`,
+        'aria-pressed': index === 0 ? 'true' : 'false',
         'data-theme': id,
         text: label,
         onClick: (event) => {
-          for (const btn of event.currentTarget.parentElement.querySelectorAll('button')) {
+          const picker = event.currentTarget.closest('[role="group"]');
+          for (const btn of picker.querySelectorAll('button')) {
             btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
           }
           event.currentTarget.classList.add('active');
+          event.currentTarget.setAttribute('aria-pressed', 'true');
           cardElement.className = `invitation-card ${id}`;
         },
       })

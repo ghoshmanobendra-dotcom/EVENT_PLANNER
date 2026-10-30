@@ -1,4 +1,4 @@
-import { buildInvitationMarkup, copyInvitationText } from './render.js';
+import { buildInvitationMarkup, copyInvitationText, INVITATION_THEMES } from './render.js';
 
 const STORAGE_KEY = 'event-planner:plan';
 const slot = document.getElementById('invitation-slot');
@@ -27,26 +27,22 @@ if (!state?.input) {
   const cardElement = buildInvitationMarkup(state);
   if (slot) slot.replaceChildren(cardElement);
 
-  const themes = [
-    { id: 'theme-emerald', label: '🌿 Emerald Royale' },
-    { id: 'theme-gold', label: '✨ Golden Sunset' },
-    { id: 'theme-rose', label: '🌸 Rose Romance' },
-    { id: 'theme-midnight', label: '🌌 Midnight Star' },
-  ];
-
   if (themeSelector) {
-    for (let i = 0; i < themes.length; i += 1) {
-      const { id, label } = themes[i];
+    for (let i = 0; i < INVITATION_THEMES.length; i += 1) {
+      const { id, label } = INVITATION_THEMES[i];
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = `chip ${i === 0 ? 'active' : ''}`;
+      btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
       btn.textContent = label;
       btn.dataset.theme = id;
       btn.addEventListener('click', () => {
         for (const sibling of themeSelector.querySelectorAll('button')) {
           sibling.classList.remove('active');
+          sibling.setAttribute('aria-pressed', 'false');
         }
         btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
         cardElement.className = `invitation-card ${id}`;
       });
       themeSelector.append(btn);
